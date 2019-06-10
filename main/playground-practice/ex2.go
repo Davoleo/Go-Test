@@ -1,5 +1,6 @@
 package playground_practice
 
+//Allerta il più piccolo di 3 numeri randomici
 func main() {
 	var a, b, c int = RandInt(1, 6), RandInt(1, 6), RandInt(1, 6)
 

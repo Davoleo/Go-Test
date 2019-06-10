@@ -1,6 +1,6 @@
 package playground_practice
 
-//Draw a circle and print out the area
+//Disegna un cerchio pieno di un colore randomico e ne espone l'area
 func main() {
 
 	radius := ToInt(Prompt("radius?"))

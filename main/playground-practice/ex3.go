@@ -1,5 +1,7 @@
 package playground_practice
 
+//Calcola Quanti hanni hai data la data corrente e quella di nascita
+//HEHEHE data la data :P
 func main() {
 	birthDay := ToInt(Prompt("Giorno di Nascita?"))
 	birthMonth := ToInt(Prompt("Mese di Nascita?"))
