@@ -1,6 +1,6 @@
-package playground_practice
+package main
 
-import "g2d"
+import . "../../lib/go/g2d"
 
 /**
 Chiedere all'utente un numero n

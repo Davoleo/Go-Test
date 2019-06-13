@@ -1,5 +1,7 @@
-package playground_practice
+package main
 
+import . "../../lib/go/g2d"
+import "math"
 //Disegna un cerchio pieno di un colore randomico e ne espone l'area
 func main() {
 

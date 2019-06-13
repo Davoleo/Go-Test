@@ -1,6 +1,6 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 import "math"
 
 var xc, yc, k float64 = 250, 250, 200
@@ -14,11 +14,11 @@ func main() {
 
 	InitCanvas(canvasSize)
 	SetFrameRate(20)
-	MainLoop(tick)
+	MainLoop(tick4)
 
 }
 
-func tick() {
+func tick4() {
 	ClearCanvas()
 	Move()
 }

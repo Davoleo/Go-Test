@@ -1,5 +1,6 @@
-package playground_practice
+package main
 
+import . "../../lib/go/g2d"
 //Calcola Quanti hanni hai data la data corrente e quella di nascita
 //HEHEHE data la data :P
 func main() {

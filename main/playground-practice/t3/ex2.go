@@ -1,6 +1,6 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
  
 
@@ -13,11 +13,11 @@ func main() {
         results[i] = RandInt(2, 12)
     }
     
-    getValueFrequency(results, 11)
+    getValueFrequency1(results, 11)
     
 }
 
-func getValueFrequency(list []int, num int) {
+func getValueFrequency1(list []int, num int) {
     for index, value := range list {
         if num == value {
             Println(index, value)

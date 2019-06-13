@@ -1,13 +1,13 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
-var canvasSize Size = Size{500, 500}
+var canvSize Size = Size{500, 500}
 var b *Ball = NewBall(Point{40, 40})
 
 func main() {
 
-	InitCanvas(canvasSize)
+	InitCanvas(canvSize)
 
 	MainLoop(tick)
 
@@ -26,7 +26,7 @@ func (b *Ball) Move() {
 
 	if b.y >= 300 {
 		b.x -= b.dx
-	} else if b.x >= canvasSize.W-b.w {
+	} else if b.x >= canvSize.W-b.w {
 		b.y += b.dy
 	} else {
 		b.x += b.dx

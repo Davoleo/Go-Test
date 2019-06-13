@@ -1,5 +1,6 @@
-package playground_practice
+package main
 
+import . "../../lib/go/g2d"
 /**
 Generare all'inizio del programma un numero “segreto” a caso tra 1 e 90
 Chiedere ripetutamente all'utente di immettere un numero, finché non indovina quello generato

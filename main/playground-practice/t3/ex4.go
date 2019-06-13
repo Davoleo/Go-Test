@@ -1,55 +1,95 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
-// BALL CLASS ------------------------------------------------------
-type Ball struct {
+//Main
+func main() {
+
+    InitCanvas(arena.Size())
+    MainLoop(tick)
+}
+
+//LOG CLASS -----------------------------------------------------------
+type Log struct {
+
+}
+
+// Vehicle11 CLASS ------------------------------------------------------
+type Vehicle struct {
     arena         *Arena
     x, y, w, h    int
     speed, dx, dy int
+    category string
+    direction string
 }
 
-func NewBall(arena *Arena, pos Point) *Ball {
-    a := &Ball{arena, pos.X, pos.Y, 20, 20, 5, 5, 5}
+func NewVehicle(arena *Arena, pos Point, width int, speed int, category string, direction string) *Vehicle {
+    a := &Vehicle{arena, pos.X, pos.Y, width, 32, speed, speed, speed, category, direction}
     arena.Add(a)
     return a
 }
 
-func (a *Ball) Move() {
+func (a *Vehicle) Move() {
     as := a.arena.Size()
-    if !(0 <= a.x+a.dx && a.x+a.dx <= as.W-a.w) {
-        a.dx = -a.dx
+
+    //Controls whether the vehicle should be brought again to the other side of the arena
+    if a.x > as.W + 100 {
+        a.x = -100
     }
-    if !(0 <= a.y+a.dy && a.y+a.dy <= as.H-a.h) {
-        a.dy = -a.dy
+    if a.x < -100 {
+        a.x = as.W + 100
     }
-    a.x += a.dx
-    a.y += a.dy
+
+    //Controls in which direction the vehicle moves
+    if	a.direction == "dx" {
+        a.x += a.dx
+    } else if a.direction == "sx" {
+        a.x -= a.dx
+    }
 }
 
-func (a *Ball) Position() Rect {
+func (a *Vehicle) Position() Rect {
     return Rect{a.x, a.y, a.w, a.h}
 }
 
-func (a *Ball) Symbol() Rect {
-    return Rect{0, 0, a.h, a.w}
-}
-
-func (a *Ball) Collide(other Actor) {
-    _, ok := other.(*Ghost)
-    if !ok {
-        op := other.Position()
-        if op.X < a.x {
-            a.dx = a.speed
+//Controls the symbol of the vehicle based on its category and direction
+func (a *Vehicle) Symbol() Rect {
+    if	a.category == "fast_car" {
+        if	a.direction == "dx" {
+            return Rect{192, 0, a.h, a.w}
         } else {
-            a.dx = -a.speed
-        }
-        if op.Y < a.y {
-            a.dy = a.speed
-        } else {
-            a.dy = -a.speed
+            return Rect{192, 32, a.h, a.w}
         }
     }
+    if a.category == "car" {
+        if a.direction == "sx" {
+            return Rect{256, 0, a.h, a.w}
+        } else {
+            return Rect{256, 32, a.h, a.w}
+        }
+    }
+    if a.category == "truck" {
+        if a.direction == "dx" {
+            return Rect{256, 64, a.w, a.h}
+        } else {
+            return Rect{192, 64, a.w, a.h}
+        }
+    }
+    if a.category == "tractor" {
+        if	a.direction == "dx" {
+            return Rect{224, 0, a.w, a.h}
+        } else {
+            return Rect{224, 32, a.w, a.h}
+        }
+    }
+    return Rect{0, 0, 0, 0}
+}
+
+func (a *Vehicle) Speed() Point {
+    return Point{a.dx, a.dy}
+}
+
+func (a *Vehicle) Collide(other Actor) {
 }
 
 //GHOST CLASS ----------------------------------------------------
@@ -97,53 +137,71 @@ type Frog struct {
     arena         *Arena
     x, y, w, h    int
     speed, dx, dy int
+    count int
 }
 
 func NewFrog(arena *Arena, pos Point) *Frog {
-    a := &Frog{arena, pos.X, pos.Y, 20, 20, 15, 0, 0}
+    a := &Frog{arena, pos.X, pos.Y, 32, 32, 8, 0, 0, 0}
     arena.Add(a)
     return a
 }
 
 func (a *Frog) Move() {
-    as := a.arena.Size()
-    a.x += a.dx
-    if a.x < 0 {
-        a.x = 0
-    } else if a.x > as.W-a.w {
-        a.x = as.W - a.w
-    }
-    a.y += a.dy
-    if a.y < 0 {
-        a.y = 0
-    } else if a.y > as.H-a.h {
-        a.y = as.H - a.h
+    if a.count > 0 {
+        a.count--
+        as := a.arena.Size()
+        a.x += a.dx
+        if a.x < 0 {
+            a.x = 0
+        } else if a.x > as.W-a.w {
+            a.x = as.W - a.w
+        }
+        a.y += a.dy
+        if a.y < 0 {
+            a.y = 0
+        } else if a.y > as.H-a.h {
+            a.y = as.H - a.h
+        }
     }
 
 }
 var moving bool = false
 
 func (a *Frog) GoLeft() {
-	a.dx, a.dy = -a.speed, 0
+    if a.count == 0 {
+        a.count = 4
+    }
+    a.dx, a.dy = -a.speed, 0
 }
 
 func (a *Frog) GoRight() {
-	a.dx, a.dy = +a.speed, 0
+    if a.count == 0 {
+        a.count = 4
+    }
+    a.dx, a.dy = +a.speed, 0
 }
 
 func (a *Frog) GoUp() {
-	a.dx, a.dy = 0, -a.speed
+    if a.count == 0 {
+        a.count = 4
+    }
+    a.dx, a.dy = 0, -a.speed
 }
+
 
 func (a *Frog) GoDown() {
-	a.dx, a.dy = 0, +a.speed
-}
-
-func (a *Frog) Stay() {
-    a.dx, a.dy = 0, 0
+    if a.count == 0 {
+        a.count = 4
+    }
+    a.dx, a.dy = 0, +a.speed
 }
 
 func (a *Frog) Collide(other Actor) {
+    _, isVehicle := other.(*Vehicle)
+    if isVehicle {
+        a.x = 300
+        a.y = 416
+    }
 }
 
 func (a *Frog) Position() Rect {
@@ -151,77 +209,52 @@ func (a *Frog) Position() Rect {
 }
 
 func (a *Frog) Symbol() Rect {
-    return Rect{0, 20, a.w, a.h}
+    if a.count == 0 {
+        return Rect{0, 0, a.w, a.h}
+    }
+    return Rect{32, 0, a.w, a.h}
 }
 //--------------------------------------------------
-
-/*
-type BounceGame struct {
-    arena *Arena
-    hero  *Frog
-}
-
-func NewBounceGame() *BounceGame {
-    a := NewArena(Size{480, 360})
-    t := NewFrog(a, Point{80, 80})
-    NewBall(a, Point{40, 80})
-    NewBall(a, Point{80, 40})
-    NewGhost(a, Point{120, 80})
-    return &BounceGame{a, t}
-}
-
-func (a *BounceGame) Hero() *Frog {
-    return a.hero
-}
-
-func (a *BounceGame) Arena() *Arena {
-    return a.arena
-}
-
-var game = NewBounceGame()
-*/
-
-var arena = NewArena(Size{480, 360})
-var hero = NewFrog(arena, Point{80, 80})
-var ball1 = NewBall(arena, Point{40, 80})
-var ball2 = NewBall(arena, Point{80, 40})
+//Global Vars
+var arena = NewArena(Size{640, 448})
+var hero = NewFrog(arena, Point{300, 416})
+var Vehicle1 = NewVehicle(arena, Point{150, 384}, 32, 10, "fast_car", "sx")
+var Vehicle2 = NewVehicle(arena, Point{0, 320}, 32, 8, "car", "sx")
+var Vehicle3 = NewVehicle(arena, Point{200, 288}, 32, 14, "fast_car", "dx")
+var Vehicle4 = NewVehicle(arena, Point{200, 256}, 64, 6, "truck", "sx")
+var Vehicle5 = NewVehicle(arena, Point{200, 352}, 64, 6, "truck", "dx")
+var Vehicle6 = NewVehicle(arena, Point{300, 384}, 32, 10, "fast_car", "sx")
+var Vehicle7 = NewVehicle(arena, Point{123, 320}, 32, 8, "car", "sx")
+var Vehicle8 = NewVehicle(arena, Point{1000, 256}, 32, 6, "tractor", "sx")
+var Vehicle9 = NewVehicle(arena, Point{400, 256}, 64, 6, "truck", "sx")
+var Vehicle10 = NewVehicle(arena, Point{400, 352}, 64, 6, "truck", "dx")
 var ghost = NewGhost(arena, Point{120, 80})
 
-var sprites = LoadImage("sprites.png")
-var count int = 0
-func tick() {
-Println(count)
+var sprites = LoadImage("https://tomamic.github.io/images/misc/frogger_32.png")
+var bg = LoadImage("https://tomamic.github.io/images/misc/frogger_bg.png")
 
-if (KeyPressed("ArrowUp")) {
-    hero.GoUp()
-    count = 5;
-} else if KeyPressed("ArrowRight") {
-    hero.GoRight()
-} else if KeyPressed("ArrowDown") {
-    hero.GoDown()
-} else if KeyPressed("ArrowLeft") {
-    hero.GoLeft()
-} else if KeyReleased("ArrowUp") || KeyReleased("ArrowRight") ||
-        KeyReleased("ArrowDown") || KeyReleased("ArrowLeft") {
-    hero.Stay()
-}
-if count < 0 {
-    hero.Stay()
-}
-count--
+//Ticking function
+func tick() {
+
+    if (KeyPressed("ArrowUp")) {
+        hero.GoUp()
+    } else if KeyPressed("ArrowRight") {
+        hero.GoRight()
+    } else if KeyPressed("ArrowDown") {
+        hero.GoDown()
+    } else if KeyPressed("ArrowLeft") {
+        hero.GoLeft()
+    }
+
 
     arena.MoveAll()
     ClearCanvas()
+    DrawImageClip(bg, Rect{0, 15, 640, 480}, Rect{0, 0, 640, 480})
     for _, a := range arena.Actors() {
         if a.Symbol().H != 0 {
             DrawImageClip(sprites, a.Symbol(), a.Position())
         } else {
             FillRect(a.Position())
         }
-	}
-}
-
-func main() {
-    InitCanvas(arena.Size())
-    MainLoop(tick)
+    }
 }

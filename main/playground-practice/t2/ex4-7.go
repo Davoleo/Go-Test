@@ -1,12 +1,12 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
-var ballObj *Ball = NewBall(Point{20, 100})
-var canvasSize Size = Size{500, 500}
+var ballObj *Ball2 = NewBall2(Point{20, 100})
+var canvasSize2 Size = Size{500, 500}
 var count int = 0
 
-func tick() {
+func tick2() {
 
 	if count < 5 {
 		ClearCanvas()
@@ -20,15 +20,15 @@ func tick() {
 	count++
 }
 
-func (b *Ball) Move() {
+func (b *Ball2) Move() {
 	FillCircle(Point{b.x, b.y}, b.w/2)
 
-	if b.x >= canvasSize.W+100 {
+	if b.x >= canvasSize2.W+100 {
 		b.x = -100
 	}
 
 	//if b.x < -100 {
-	//	b.x = canvasSize.W + 100
+	//	b.x = canvSize.W + 100
 	//}
 
 	b.x += b.dx
@@ -37,17 +37,17 @@ func (b *Ball) Move() {
 
 func main() {
 
-	InitCanvas(canvasSize)
-	MainLoop(tick)
+	InitCanvas(canvasSize2)
+	MainLoop(tick2)
 }
 
-type Ball struct {
+type Ball2 struct {
 	x, y   int
 	w, h   int
 	dx, dy int
 }
 
-func NewBall(pos Point) *Ball {
-	b := &Ball{pos.X, pos.Y, 50, 50, 5, 5}
+func NewBall2(pos Point) *Ball2 {
+	b := &Ball2{pos.X, pos.Y, 50, 50, 5, 5}
 	return b
 }

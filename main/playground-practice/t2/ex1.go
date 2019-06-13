@@ -1,6 +1,6 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 import "math"
 
 /**

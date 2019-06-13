@@ -1,4 +1,6 @@
-package playground_practice
+package main
+
+import . "../../lib/go/g2d"
 
 func main() {
 

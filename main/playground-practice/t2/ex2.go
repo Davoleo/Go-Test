@@ -1,6 +1,6 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
 /**
 Disegna un numero di quadrati in matrice con un gradiente di colore diverso a seconda della loro posizione x o y

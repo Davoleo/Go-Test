@@ -1,6 +1,6 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
 func main() {
     
@@ -19,11 +19,11 @@ func main() {
 func getValueFrequency(list []int) {
     
     for i := 2; i <= 12; i = i + 1 {
-    	count := 0;
+    	count := 0
         for _, value := range list {
             if i == value {
                 //Println(index, value)
-                count++;
+                count++
             }
         }
         Println(i, " è uscito ", count, " volte")

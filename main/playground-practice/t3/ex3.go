@@ -1,10 +1,10 @@
 package main
 
-import . "g2d"
+import . "../../lib/go/g2d"
 
 var screen = Size{480, 360}
 var margin = 100
-var a = NewVehicle(Point{40, 40}, 5)
+var a = NewVehicle2(Point{40, 40}, 5)
 
 type actor interface {
     Move()
@@ -12,24 +12,24 @@ type actor interface {
     collide()
 }
 
-type Vehicle struct {
+type Vehicle11 struct {
     x, y, w, h      int
     dx, left, right int
 }
 
-func NewVehicle(pos Point, dx int) *Vehicle {
-    return &Vehicle{pos.X, pos.Y, 20, 20, dx, -margin, screen.W+margin}
+func NewVehicle2(pos Point, dx int) *Vehicle11 {
+    return &Vehicle11{pos.X, pos.Y, 20, 20, dx, -margin, screen.W+margin}
 }
 
-func (a *Vehicle) symbol() {
+func (a *Vehicle11) symbol() {
 	
 }
 
-func (a *Vehicle) collide() {
+func (a *Vehicle11) collide() {
 	
 }
 
-func (a *Vehicle) Move() {
+func (a *Vehicle11) Move() {
     if a.x + a.dx < a.left {
         a.x = a.right
     }
@@ -39,15 +39,15 @@ func (a *Vehicle) Move() {
     a.x += a.dx
 }
 
-func (a *Vehicle) Position() Rect {
+func (a *Vehicle11) Position() Rect {
     return Rect{a.x, a.y, a.w, a.h}
 }
 
-func (a *Vehicle) Uturn() {
+func (a *Vehicle11) Uturn() {
     a.dx *= -1
 }
 
-func tick() {
+func tick2() {
     if KeyPressed("Enter") {
         a.Uturn()
     }
@@ -58,6 +58,6 @@ func tick() {
 
 func main() {
     InitCanvas(screen)
-    MainLoop(tick)
+    MainLoop(tick2)
 }
 

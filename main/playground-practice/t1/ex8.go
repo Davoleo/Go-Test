@@ -1,4 +1,4 @@
-package playground_practice
+package main
 
 func main() {
 
