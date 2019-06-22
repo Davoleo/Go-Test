@@ -359,8 +359,8 @@ var Vehicle9 = NewVehicle(arena, Point{400, 256}, 64, 6, "truck", "sx")
 var Vehicle10 = NewVehicle(arena, Point{400, 352}, 64, 6, "truck", "dx")
 var ghost = NewGhost(arena, Point{300, 250})
 
-var sprites = LoadImage("res/frogger_32.png")
-var bg = LoadImage("res/frogger_bg.png")
+var sprites = LoadImage("https://tomamic.github.io/images/misc/frogger_32.png")
+var bg = LoadImage("https://tomamic.github.io/images/misc/frogger_bg.png")
 
 //Ticking function
 func tick() {
